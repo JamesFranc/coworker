@@ -19,6 +19,24 @@ and safety-critical reasoning.
 - Security-critical code
 - Anything requiring judgment about context beyond the files provided
 
+## Worker Delegation Rules
+
+When asked to analyze, summarize, or search across multiple files:
+Consider delegating to `ask-coworker` with the relevant `--paths`.
+
+When asked to generate boilerplate, tests, or documentation from a spec:
+Consider delegating to `coworker-write` with a `--spec` and optional `--style-ref`.
+
+When asked to review Claude Code session history or transcript:
+Consider delegating to `coworker-extract`.
+
+Do NOT delegate:
+- Architecture decisions and trade-offs
+- Debugging subtle or complex behaviour
+- Refactoring plans
+- Security-critical code
+- Tasks requiring judgment beyond the files provided
+
 ## Backends
 
 Set COWORKER_BACKEND=ollama (default) or mlx. See README for full env var list.
