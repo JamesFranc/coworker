@@ -1,0 +1,98 @@
+"""
+Backend abstraction for coworker-tools.
+Selected by COWORKER_BACKEND env var or --backend flag ("ollama" | "mlx").
+"""
+
+import os
+import platform
+import socket
+import sys
+
+
+class BackendError(Exception):
+    def __init__(self, message: str, exit_code: int = 3):
+        self.exit_code = exit_code
+        super().__init__(message)
+
+
+def resolve_endpoint(base_url: str, allow_remote: bool = False) -> str:
+    from urllib.parse import urlparse
+
+    parsed = urlparse(base_url)
+    hostname = parsed.hostname or ""
+
+    if hostname != "localhost":
+        try:
+            results = socket.getaddrinfo(hostname, None)
+        except socket.gaierror:
+            if not allow_remote:
+                raise BackendError(
+                    f"Could not resolve {hostname!r}; refusing non-local endpoint. Pass --allow-remote to override.",
+                    exit_code=3,
+                )
+            results = []
+
+        addresses = {r[4][0] for r in results}
+        local = {"127.0.0.1", "::1"}
+
+        if not results or not addresses.issubset(local):
+            if not allow_remote:
+                raise BackendError(
+                    f"Remote endpoint refused: {base_url}. Pass --allow-remote to override.",
+                    exit_code=3,
+                )
+
+    print(f"[coworker] endpoint: {base_url}", file=sys.stderr)
+    return base_url
+
+
+def run_worker(
+    system: str,
+    user_messages: list[str],
+    max_tokens: int = 4096,
+    *,
+    backend: str | None = None,
+    base_url: str | None = None,
+    model: str | None = None,
+    allow_remote: bool = False,
+) -> str:
+    if backend is None:
+        backend = os.environ.get("COWORKER_BACKEND", "ollama")
+
+    if backend == "ollama":
+        if base_url is None:
+            base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:11434/v1")
+        if model is None:
+            model = os.environ.get("COWORKER_MODEL", "qwen2.5-coder:14b")
+
+        resolve_endpoint(base_url, allow_remote)
+
+        import openai
+
+        client = openai.OpenAI(base_url=base_url, api_key="ollama")
+        messages = [{"role": "system", "content": system}] + [
+            {"role": "user", "content": m} for m in user_messages
+        ]
+        response = client.chat.completions.create(
+            model=model, messages=messages, max_tokens=max_tokens
+        )
+        return response.choices[0].message.content
+
+    elif backend == "mlx":
+        if platform.system() != "Darwin" or platform.machine() != "arm64":
+            raise BackendError("MLX backend requires Darwin/arm64.", exit_code=3)
+
+        if model is None:
+            model = os.environ.get(
+                "COWORKER_MODEL", "mlx-community/Qwen2.5-Coder-14B-Instruct-4bit"
+            )
+
+        from mlx_lm import generate, load
+
+        mlx_model, tokenizer = load(model)
+        prompt = "\n".join([system] + user_messages)
+        result = generate(mlx_model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)
+        return result
+
+    else:
+        raise BackendError(f"Unknown backend: {backend!r}", exit_code=1)

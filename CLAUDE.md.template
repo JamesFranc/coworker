@@ -1,0 +1,30 @@
+# coworker-tools — Claude Code integration notes
+
+## What this tool is for
+
+coworker-tools offloads bulk read-heavy or boilerplate-generation tasks to a
+local model, freeing Claude Code's context window for architecture, debugging,
+and safety-critical reasoning.
+
+## When to use it
+
+- Reading many files to answer a factual question
+- Generating boilerplate from a clear spec
+- Parsing Claude Code transcripts
+
+## When NOT to use it
+
+- Architecture decisions and trade-offs
+- Debugging subtle behaviour
+- Security-critical code
+- Anything requiring judgment about context beyond the files provided
+
+## Backends
+
+Set COWORKER_BACKEND=ollama (default) or mlx. See README for full env var list.
+
+## Safety
+
+The tool enforces localhost-only endpoints by default. Do not pass --allow-remote
+unless you have explicitly set up a trusted local network endpoint and understand
+the risks. See SECURITY.md for the full threat model.

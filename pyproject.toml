@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coworker-tools"
+version = "0.1.0"
+description = "Local-only AI coworker CLI for Claude Code"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "openai>=1.0",
+    "pathspec>=0.12",
+]
+
+[project.optional-dependencies]
+mlx = ["mlx-lm>=0.18"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+ask-coworker = "coworker.cli.ask_coworker:main"
+coworker-write = "coworker.cli.coworker_write:main"
+coworker-extract = "coworker.cli.coworker_extract:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
