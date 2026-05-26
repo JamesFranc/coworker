@@ -43,7 +43,7 @@ Send one or more files as context and ask a question about them.
 |---|---|
 | `--question TEXT` | **(required)** Question to ask the model |
 | `--paths PATH [PATH ...]` | Files to include as context |
-| `--backend {ollama,mlx}` | Override `COWORKER_BACKEND` |
+| `--backend {llamacpp,ollama,mlx}` | Override `COWORKER_BACKEND` |
 | `--model NAME` | Override `COWORKER_MODEL` |
 | `--max-tokens INT` | Max tokens in response (default: 4096) |
 | `--allow-remote` | Allow non-localhost endpoints |
@@ -62,7 +62,7 @@ Generate a new file from a spec and write it safely.
 | `--spec TEXT_OR_FILE` | **(required)** Inline spec text or path to a spec file |
 | `--target PATH` | **(required)** Destination path for the generated file |
 | `--style-ref PATH` | Existing file to use as a style reference |
-| `--backend {ollama,mlx}` | Backend to use (default: `ollama` or `$COWORKER_BACKEND`) |
+| `--backend {llamacpp,ollama,mlx}` | Backend to use (default: `llamacpp` or `$COWORKER_BACKEND`) |
 | `--model NAME` | Model name passed to the backend |
 | `--max-tokens INT` | Maximum tokens for generation (default: 4096) |
 | `--allow-remote` | Allow non-local backend endpoints |
@@ -92,9 +92,9 @@ Extract conversation turns from Claude Code JSONL transcript files.
 
 | Variable | Description |
 |---|---|
-| `COWORKER_BACKEND` | Backend to use: `ollama` (default) or `mlx` |
-| `COWORKER_BASE_URL` | Ollama base URL (default: `http://localhost:11434/v1`) |
-| `COWORKER_MODEL` | Model name (default: `qwen2.5-coder:14b` for Ollama, `mlx-community/Qwen2.5-Coder-14B-Instruct-4bit` for MLX) |
+| `COWORKER_BACKEND` | Backend to use: `llamacpp` (default), `ollama`, or `mlx` |
+| `COWORKER_BASE_URL` | Backend base URL (default: `http://localhost:8080/v1` for llamacpp, `http://localhost:11434/v1` for ollama) |
+| `COWORKER_MODEL` | Model name (default: `Qwopus3.5-9B-Coder-MTP-GGUF.Q5_K_M` for llamacpp, `qwen2.5-coder:14b` for ollama, `mlx-community/Qwen2.5-Coder-14B-Instruct-4bit` for mlx) |
 
 ## Exit codes
 

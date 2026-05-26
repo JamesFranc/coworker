@@ -39,7 +39,7 @@ Do NOT delegate:
 
 ## Backends
 
-Set COWORKER_BACKEND=ollama (default) or mlx. See README for full env var list.
+Set COWORKER_BACKEND=llamacpp (default), ollama, or mlx. See README for full env var list.
 
 ## Safety
 
