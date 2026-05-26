@@ -77,7 +77,7 @@ def run_worker(
     allow_remote: bool = False,
 ) -> str:
     if backend is None:
-        backend = os.environ.get("COWORKER_BACKEND", "ollama")
+        backend = os.environ.get("COWORKER_BACKEND", "llamacpp")
 
     if backend == "ollama":
         if base_url is None:
@@ -92,7 +92,7 @@ def run_worker(
         if base_url is None:
             base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:8080/v1")
         if model is None:
-            model = os.environ.get("COWORKER_MODEL", "qwen2.5-coder-14b")
+            model = os.environ.get("COWORKER_MODEL", "Qwopus3.5-9B-Coder-MTP-GGUF.Q5_K_M")
 
         resolve_endpoint(base_url, allow_remote)
         return _run_openai_compat(base_url, "none", model, system, user_messages, max_tokens)
