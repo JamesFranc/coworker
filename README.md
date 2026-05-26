@@ -24,8 +24,16 @@ source .venv/bin/activate
 ## Quickstart — llama.cpp (default)
 
 ```bash
-# Start llama-server with any GGUF model
-llama-server -m /path/to/your-model.gguf
+# Install llama.cpp
+brew install llama.cpp
+
+# Download the model
+huggingface-cli download Jackrong/Qwopus3.5-9B-Coder-MTP-GGUF \
+  Qwopus3.5-9B-Coder-MTP-Q5_K_M.gguf \
+  --local-dir ~/models/
+
+# Start llama-server
+llama-server -m ~/models/Qwopus3.5-9B-Coder-MTP-Q5_K_M.gguf
 
 ask-coworker --question "What does this file do?" --paths src/coworker/safety.py
 ```
