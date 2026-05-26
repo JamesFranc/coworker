@@ -2,14 +2,15 @@
 
 coworker-tools is a set of CLI utilities that offload bulk read-heavy or
 boilerplate-generation tasks to a local LLM, keeping secrets and source code
-off remote servers. It supports Ollama and MLX (Darwin/arm64) backends with
-strict safety guards around file reading and writing.
+off remote servers. It supports llama.cpp, Ollama, and MLX (Darwin/arm64)
+backends with strict safety guards around file reading and writing.
 
 ## Install
 
-**Prerequisites:** Python 3.10+, and either
-[Ollama](https://ollama.com) running locally *or* an Apple Silicon Mac with
-`pip install -e ".[mlx]"`.
+**Prerequisites:** Python 3.10+, and one of:
+- [llama.cpp](https://github.com/ggerganov/llama.cpp) `llama-server` (default)
+- [Ollama](https://ollama.com) running locally
+- An Apple Silicon Mac with `pip install -e ".[mlx]"`
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/coworker-tools.git
@@ -20,11 +21,20 @@ source .venv/bin/activate
 
 > There is no `curl | bash` installer. Do not use one.
 
+## Quickstart — llama.cpp (default)
+
+```bash
+# Start llama-server with any GGUF model
+llama-server -m /path/to/your-model.gguf
+
+ask-coworker --question "What does this file do?" --paths src/coworker/safety.py
+```
+
 ## Quickstart — Ollama
 
 ```bash
 ollama pull qwen2.5-coder:14b
-ask-coworker --question "What does this file do?" --paths src/coworker/safety.py
+ask-coworker --backend ollama --question "What does this file do?" --paths src/coworker/safety.py
 ```
 
 ## Quickstart — MLX (Darwin/arm64 only)
