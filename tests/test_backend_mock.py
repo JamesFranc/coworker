@@ -49,6 +49,44 @@ def test_ollama_happy_path(monkeypatch):
 
 
 # ---------------------------------------------------------------------------
+# 1b. llamacpp happy path
+# ---------------------------------------------------------------------------
+
+
+def test_llamacpp_happy_path(monkeypatch):
+    fake_message = MagicMock()
+    fake_message.content = "Hello from llamacpp"
+
+    fake_choice = MagicMock()
+    fake_choice.message = fake_message
+
+    fake_response = MagicMock()
+    fake_response.choices = [fake_choice]
+
+    fake_client = MagicMock()
+    fake_client.chat.completions.create.return_value = fake_response
+
+    fake_openai = MagicMock()
+    fake_openai.OpenAI.return_value = fake_client
+
+    monkeypatch.setattr("coworker.backend.socket.getaddrinfo", lambda *a, **kw: [
+        (None, None, None, None, ("127.0.0.1", 0))
+    ])
+
+    with patch.dict(sys.modules, {"openai": fake_openai}):
+        result = run_worker(
+            system="You are helpful.",
+            user_messages=["Say hi"],
+            backend="llamacpp",
+            base_url="http://localhost:8080/v1",
+            model="test-model",
+        )
+
+    assert result == "Hello from llamacpp"
+    fake_client.chat.completions.create.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
 # 2. Ollama localhost allowed
 # ---------------------------------------------------------------------------
 

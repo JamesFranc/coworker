@@ -1,6 +1,6 @@
 """
 Backend abstraction for coworker-tools.
-Selected by COWORKER_BACKEND env var or --backend flag ("ollama" | "mlx").
+Selected by COWORKER_BACKEND env var or --backend flag ("ollama" | "llamacpp" | "mlx").
 """
 
 import os
@@ -46,6 +46,26 @@ def resolve_endpoint(base_url: str, allow_remote: bool = False) -> str:
     return base_url
 
 
+def _run_openai_compat(
+    base_url: str,
+    api_key: str,
+    model: str,
+    system: str,
+    user_messages: list[str],
+    max_tokens: int,
+) -> str:
+    import openai
+
+    client = openai.OpenAI(base_url=base_url, api_key=api_key)
+    messages = [{"role": "system", "content": system}] + [
+        {"role": "user", "content": m} for m in user_messages
+    ]
+    response = client.chat.completions.create(
+        model=model, messages=messages, max_tokens=max_tokens
+    )
+    return response.choices[0].message.content
+
+
 def run_worker(
     system: str,
     user_messages: list[str],
@@ -66,17 +86,16 @@ def run_worker(
             model = os.environ.get("COWORKER_MODEL", "qwen2.5-coder:14b")
 
         resolve_endpoint(base_url, allow_remote)
+        return _run_openai_compat(base_url, "ollama", model, system, user_messages, max_tokens)
 
-        import openai
+    elif backend == "llamacpp":
+        if base_url is None:
+            base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:8080/v1")
+        if model is None:
+            model = os.environ.get("COWORKER_MODEL", "qwen2.5-coder-14b")
 
-        client = openai.OpenAI(base_url=base_url, api_key="ollama")
-        messages = [{"role": "system", "content": system}] + [
-            {"role": "user", "content": m} for m in user_messages
-        ]
-        response = client.chat.completions.create(
-            model=model, messages=messages, max_tokens=max_tokens
-        )
-        return response.choices[0].message.content
+        resolve_endpoint(base_url, allow_remote)
+        return _run_openai_compat(base_url, "none", model, system, user_messages, max_tokens)
 
     elif backend == "mlx":
         if platform.system() != "Darwin" or platform.machine() != "arm64":
