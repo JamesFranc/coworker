@@ -12,31 +12,50 @@ backends with strict safety guards around file reading and writing.
 - [Ollama](https://ollama.com) running locally
 - An Apple Silicon Mac with `pip install -e ".[mlx]"`
 
+Recommended (installs the CLIs onto your PATH):
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/coworker-tools.git
 cd coworker-tools
-bash setup.sh
+uv tool install --editable .
+uv tool update-shell   # ensure ~/.local/bin (or equivalent) is on PATH
+```
+
+For contributors who want a local virtualenv with dev/test deps, use the
+fallback installers instead:
+
+```bash
+bash setup.sh            # creates .venv, installs deps, prompts for a model
 source .venv/bin/activate
+# or: pipx install --editable .
 ```
 
 > There is no `curl | bash` installer. Do not use one.
 
 ## Quickstart — llama.cpp (default)
 
+The default model is **Gemma 4 E4B**. Use `coworker-model` to list models,
+switch the active one, and get the matching download command.
+
 ```bash
 # Install llama.cpp
 brew install llama.cpp
 
-# Download the model
-huggingface-cli download Jackrong/Qwopus3.5-9B-Coder-MTP-GGUF \
-  Qwopus3.5-9B-Coder-MTP-Q5_K_M.gguf \
-  --local-dir ~/models/
+# See available models (active one is marked with *)
+coworker-model --list
 
-# Start llama-server
-llama-server -m ~/models/Qwopus3.5-9B-Coder-MTP-Q5_K_M.gguf
+# Pick a model (writes the choice to config; offers to download the GGUF)
+coworker-model --set "Gemma 4 E4B"
+
+# Start llama-server against the GGUF you downloaded
+llama-server -m ~/models/<your-model>.gguf
 
 ask-coworker --question "What does this file do?" --paths src/coworker/safety.py
 ```
+
+> **Behavior change:** the implicit llamacpp default is now Gemma 4 E4B
+> (`gemma-4-E4B-it-UD-Q4_K_XL`), not Qwopus. If you relied on the old default,
+> run `coworker-model --set Qwopus3.5-9B-Coder`, set `COWORKER_MODEL`, or pass `--model`.
 
 ## Quickstart — Ollama
 
@@ -106,13 +125,28 @@ Extract conversation turns from Claude Code JSONL transcript files.
 | `--format {text,json}`, `-f` | Output format (default: `text`) |
 | `--role {human,assistant,all}`, `-r` | Filter by role (default: `all`) |
 
+### `coworker-model`
+
+List available llamacpp worker models and select the active one. The selection
+is stored in `$XDG_CONFIG_HOME/coworker/config.toml` (default `~/.config`) and
+used by the llamacpp backend when no `--model` flag or `COWORKER_MODEL` env var
+is set.
+
+| Flag | Description |
+|---|---|
+| `--list` | List models (`label` + `model_id`); the active one is marked `*` |
+| `--set LABEL` | Set the active model; offers to download the GGUF if missing |
+
+Known labels (case-insensitive): `Gemma 4 E4B` (default), `Gemma 4 E2B`,
+`Qwopus3.5-9B-Coder`.
+
 ## Environment variables
 
 | Variable | Description |
 |---|---|
 | `COWORKER_BACKEND` | Backend to use: `llamacpp` (default), `ollama`, or `mlx` |
 | `COWORKER_BASE_URL` | Backend base URL (default: `http://localhost:8080/v1` for llamacpp, `http://localhost:11434/v1` for ollama) |
-| `COWORKER_MODEL` | Model name (default: `Qwopus3.5-9B-Coder-MTP-GGUF.Q5_K_M` for llamacpp, `qwen2.5-coder:14b` for ollama, `mlx-community/Qwen2.5-Coder-14B-Instruct-4bit` for mlx) |
+| `COWORKER_MODEL` | Model name (default: `gemma-4-E4B-it-UD-Q4_K_XL` for llamacpp — or your `coworker-model` selection; `qwen2.5-coder:14b` for ollama; `mlx-community/Qwen2.5-Coder-14B-Instruct-4bit` for mlx) |
 
 ## Exit codes
 

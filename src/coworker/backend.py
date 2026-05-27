@@ -66,6 +66,40 @@ def _run_openai_compat(
     return response.choices[0].message.content
 
 
+def _resolve_backend_and_model(
+    backend: str | None,
+    model: str | None,
+) -> tuple[str, str]:
+    """Apply 4-level precedence for backend and model.
+
+    Precedence (highest → lowest):
+    1. Explicit arg passed to run_worker()
+    2. COWORKER_BACKEND / COWORKER_MODEL env vars
+    3. read_config() from config.py
+    4. Built-in defaults: "llamacpp" / DEFAULT_MODEL.model_id
+    """
+    from coworker.config import read_config
+    from coworker.models import DEFAULT_MODEL
+
+    cfg = read_config()
+
+    if backend is None:
+        backend = os.environ.get("COWORKER_BACKEND")
+    if backend is None:
+        backend = cfg.get("backend") or None
+    if backend is None:
+        backend = "llamacpp"
+
+    if model is None:
+        model = os.environ.get("COWORKER_MODEL")
+    if model is None:
+        model = cfg.get("model") or None
+    if model is None:
+        model = DEFAULT_MODEL.model_id
+
+    return backend, model
+
+
 def run_worker(
     system: str,
     user_messages: list[str],
@@ -76,14 +110,11 @@ def run_worker(
     model: str | None = None,
     allow_remote: bool = False,
 ) -> str:
-    if backend is None:
-        backend = os.environ.get("COWORKER_BACKEND", "llamacpp")
+    backend, model = _resolve_backend_and_model(backend, model)
 
     if backend == "ollama":
         if base_url is None:
             base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:11434/v1")
-        if model is None:
-            model = os.environ.get("COWORKER_MODEL", "qwen2.5-coder:14b")
 
         resolve_endpoint(base_url, allow_remote)
         return _run_openai_compat(base_url, "ollama", model, system, user_messages, max_tokens)
@@ -91,8 +122,6 @@ def run_worker(
     elif backend == "llamacpp":
         if base_url is None:
             base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:8080/v1")
-        if model is None:
-            model = os.environ.get("COWORKER_MODEL", "Qwopus3.5-9B-Coder-MTP-GGUF.Q5_K_M")
 
         resolve_endpoint(base_url, allow_remote)
         return _run_openai_compat(base_url, "none", model, system, user_messages, max_tokens)
@@ -100,11 +129,6 @@ def run_worker(
     elif backend == "mlx":
         if platform.system() != "Darwin" or platform.machine() != "arm64":
             raise BackendError("MLX backend requires Darwin/arm64.", exit_code=3)
-
-        if model is None:
-            model = os.environ.get(
-                "COWORKER_MODEL", "mlx-community/Qwen2.5-Coder-14B-Instruct-4bit"
-            )
 
         from mlx_lm import generate, load
 
