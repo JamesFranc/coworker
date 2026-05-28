@@ -1,0 +1,962 @@
+{
+  "variant": "strict",
+  "repeat": 3,
+  "jobs": 5,
+  "model": null,
+  "timeout": 300,
+  "positive_threshold": 0.5,
+  "timestamp": "2026-05-28T19:30:53.292481+00:00",
+  "elapsed_seconds": 295.8,
+  "n_cases": 16,
+  "n_sessions": 48,
+  "cases": [
+    {
+      "id": "ask_routes_status",
+      "category": "positive",
+      "expect": "ask-coworker",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "ask-coworker",
+      "runs": [
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/ --question \"What HTTP status codes do the route handlers return? List them per file.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/ --question \"What HTTP status codes do the route handlers return? List them per file.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/ --question \"What HTTP status codes do the route handlers return? List them per file.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 3,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "ask_routes_summary",
+      "category": "positive",
+      "expect": "ask-coworker",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "ask-coworker",
+      "runs": [
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/ --question \"What is each file under app/routes/ responsible for? Please summarize the purpose of each file.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/health.py app/routes/orders.py app/routes/users.py --question \"What is each file responsible for? Provide a brief summary for each.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/health.py app/routes/orders.py app/routes/users.py --question \"What is each file responsible for? Give a one-paragraph summary per file.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "ask_config_timeout",
+      "category": "positive",
+      "expect": "ask-coworker",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "ask-coworker",
+      "runs": [
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths config_a.toml config_b.toml config_c.toml --question \"Which of these files set a timeout value?\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths config_a.toml config_b.toml config_c.toml --question \"Which of these files set a timeout value?\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths config_a.toml config_b.toml config_c.toml --question \"Which of these files set a timeout value?\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "write_tests_styleref",
+      "category": "positive",
+      "expect": "coworker-write",
+      "expect_args": [
+        "--style-ref"
+      ],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "coworker-write",
+      "runs": [
+        {
+          "delegated": "coworker-write",
+          "matched_command": "coworker-write --spec safety.py --style-ref tests/test_sample.py --output tests/test_safety_gen.py 2>&1",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-write"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-write",
+          "matched_command": "coworker-write --spec safety.py --style-ref tests/test_sample.py --output tests/test_safety_gen.py 2>&1",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-write"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-write",
+          "matched_command": "coworker-write --spec \"Generate a pytest file for safety.py that covers each validation branch. Write it to tests/test_safety_gen.py.\" --style-ref tests/test_sample.py --output tests/test_safety_gen.py 2>&1",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-write"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "write_doc_from_spec",
+      "category": "positive",
+      "expect": "coworker-write",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "coworker-write",
+      "runs": [
+        {
+          "delegated": "coworker-write",
+          "matched_command": "coworker-write --spec spec.md --output CONTRIBUTING.md",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-write"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-write",
+          "matched_command": "coworker-write --spec spec.md --output CONTRIBUTING.md",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-write"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-write",
+          "matched_command": "coworker-write --spec spec.md --output CONTRIBUTING.md",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-write"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "extract_human_turns",
+      "category": "positive",
+      "expect": "coworker-extract",
+      "expect_args": [
+        "transcript.jsonl"
+      ],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "coworker-extract",
+      "runs": [
+        {
+          "delegated": "coworker-extract",
+          "matched_command": "coworker-extract --path transcript.jsonl --task \"extract human turns\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-extract"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-extract",
+          "matched_command": "coworker-extract --path transcript.jsonl --question \"Extract just the human turns\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-extract"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-extract",
+          "matched_command": "coworker-extract --path transcript.jsonl --question \"Extract just the human turns\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-extract"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "extract_to_text",
+      "category": "positive",
+      "expect": "coworker-extract",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "coworker-extract",
+      "runs": [
+        {
+          "delegated": "coworker-extract",
+          "matched_command": "coworker-extract --transcript transcript.jsonl",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-extract"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-extract",
+          "matched_command": "coworker-extract --path /tmp/claude-0/coworker-eval-extract_to_text-80j_ejjf/transcript.jsonl",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-extract"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-extract",
+          "matched_command": "coworker-extract --path /tmp/claude-0/coworker-eval-extract_to_text-4fr59gzk/transcript.jsonl",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-extract"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "model_list",
+      "category": "positive",
+      "expect": "coworker-model",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "coworker-model",
+      "runs": [
+        {
+          "delegated": "coworker-model",
+          "matched_command": "coworker-model",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-model"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-model",
+          "matched_command": "coworker-model 2>&1",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-model"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-model",
+          "matched_command": "coworker-model",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-model"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "model_set",
+      "category": "positive",
+      "expect": "coworker-model",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "coworker-model",
+      "runs": [
+        {
+          "delegated": "coworker-model",
+          "matched_command": "coworker-model 2>&1",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 5,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-model",
+          "matched_command": "coworker-model",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-model"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": "coworker-model",
+          "matched_command": "coworker-model --list 2>&1",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model",
+            "coworker-model"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 7,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "neg_architecture",
+      "category": "negative",
+      "expect": "none",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "none",
+      "runs": [
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 0,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 0,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 0,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "neg_debugging",
+      "category": "negative",
+      "expect": "none",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "none",
+      "runs": [
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 3,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 3,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "neg_security_review",
+      "category": "negative",
+      "expect": "none",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "none",
+      "runs": [
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "neg_refactor_plan",
+      "category": "negative",
+      "expect": "none",
+      "expect_args": [],
+      "soft": false,
+      "note": null,
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "none",
+      "runs": [
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "edge_single_small_file",
+      "category": "edge",
+      "expect": null,
+      "expect_args": [],
+      "soft": true,
+      "note": "Single tiny file \u2014 delegating is arguably wasteful. Informational: tests over-triggering on the word 'summarize'.",
+      "rate": 0.0,
+      "correct": 0,
+      "total": 3,
+      "sample_delegated": "none",
+      "runs": [
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": false,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 0,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/health.py --question \"Summarize this file.\"",
+          "source": "stream",
+          "correct": false,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 1,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": false,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 0,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "edge_read_then_judge",
+      "category": "edge",
+      "expect": "ask-coworker",
+      "expect_args": [],
+      "soft": true,
+      "note": "Ideal: delegate the bulk READ to ask-coworker, keep the restructuring judgment. Soft-scored against ask-coworker.",
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "ask-coworker",
+      "runs": [
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker \\\n  --paths app/routes/users.py app/routes/health.py app/routes/orders.py \\\n  --question \"Read all these route handlers and recommend the best way to restructure them into a single resource module. Describe the current structure, identify patterns and shared concerns, and propose a concrete restructuring approach.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/users.py app/routes/health.py app/routes/orders.py --question \"Analyze all these route handlers and recommend the best way to restructure them into a single resource module. Include details about what each file currently does, what patterns they share, and concrete restructuring advice.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        },
+        {
+          "delegated": "ask-coworker",
+          "matched_command": "ask-coworker --paths app/routes/users.py app/routes/health.py app/routes/orders.py --question \"Read all the handlers in these route files and recommend the best way to restructure them into a single resource module.\"",
+          "source": "stream",
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [
+            "ask-coworker"
+          ],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 2,
+          "stdout_path": null
+        }
+      ]
+    },
+    {
+      "id": "edge_security_write_collision",
+      "category": "edge",
+      "expect": "none",
+      "expect_args": [],
+      "soft": true,
+      "note": "'write a function' trigger collides with the security-critical anti-rule. Should NOT delegate.",
+      "rate": 1.0,
+      "correct": 3,
+      "total": 3,
+      "sample_delegated": "none",
+      "runs": [
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 7,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 4,
+          "stdout_path": null
+        },
+        {
+          "delegated": null,
+          "matched_command": null,
+          "source": null,
+          "correct": true,
+          "timed_out": false,
+          "error": null,
+          "returncode": 0,
+          "stub_tools": [],
+          "stub_stream_mismatch": false,
+          "n_bash_commands": 6,
+          "stdout_path": null
+        }
+      ]
+    }
+  ],
+  "by_category": {
+    "positive": {
+      "correct": 27,
+      "total": 27,
+      "soft_cases": 0,
+      "rate": 1.0
+    },
+    "negative": {
+      "correct": 12,
+      "total": 12,
+      "soft_cases": 0,
+      "rate": 1.0
+    },
+    "edge": {
+      "correct": 0,
+      "total": 0,
+      "soft_cases": 3,
+      "rate": null
+    }
+  },
+  "failures": [],
+  "passed": true
+}

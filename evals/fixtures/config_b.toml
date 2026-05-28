@@ -1,0 +1,8 @@
+# Service B configuration
+[server]
+host = "127.0.0.1"
+port = 8002
+
+[client]
+retries = 5
+# no timeout configured; relies on the default

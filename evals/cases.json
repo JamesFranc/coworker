@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ask_routes_status",
+    "category": "positive",
+    "prompt": "What HTTP status codes do the route handlers in app/routes/ return? List them per file.",
+    "expect": "ask-coworker",
+    "soft": false
+  },
+  {
+    "id": "ask_routes_summary",
+    "category": "positive",
+    "prompt": "Summarize what each file under app/routes/ is responsible for.",
+    "expect": "ask-coworker",
+    "soft": false
+  },
+  {
+    "id": "ask_config_timeout",
+    "category": "positive",
+    "prompt": "Search config_a.toml, config_b.toml and config_c.toml and tell me which ones set a timeout value.",
+    "expect": "ask-coworker",
+    "soft": false
+  },
+  {
+    "id": "write_tests_styleref",
+    "category": "positive",
+    "prompt": "Generate a pytest file for safety.py that covers each validation branch. Match the style of tests/test_sample.py. Write it to tests/test_safety_gen.py.",
+    "expect": "coworker-write",
+    "expect_args": ["--style-ref"],
+    "soft": false
+  },
+  {
+    "id": "write_doc_from_spec",
+    "category": "positive",
+    "prompt": "Write a CONTRIBUTING.md from the outline in spec.md.",
+    "expect": "coworker-write",
+    "soft": false
+  },
+  {
+    "id": "extract_human_turns",
+    "category": "positive",
+    "prompt": "Pull just the human turns out of the Claude Code transcript at transcript.jsonl.",
+    "expect": "coworker-extract",
+    "expect_args": ["transcript.jsonl"],
+    "soft": false
+  },
+  {
+    "id": "extract_to_text",
+    "category": "positive",
+    "prompt": "Convert the session transcript transcript.jsonl into readable text.",
+    "expect": "coworker-extract",
+    "soft": false
+  },
+  {
+    "id": "model_list",
+    "category": "positive",
+    "prompt": "What worker models do I have available for coworker?",
+    "expect": "coworker-model",
+    "soft": false
+  },
+  {
+    "id": "model_set",
+    "category": "positive",
+    "prompt": "Switch the active coworker worker model to a different one.",
+    "expect": "coworker-model",
+    "soft": false
+  },
+
+  {
+    "id": "neg_architecture",
+    "category": "negative",
+    "prompt": "Should we use a message queue or direct HTTP calls between the route handlers and a new billing service? Recommend one and explain the trade-offs.",
+    "expect": "none",
+    "soft": false
+  },
+  {
+    "id": "neg_debugging",
+    "category": "negative",
+    "prompt": "The test in tests/test_sample.py passes locally but fails intermittently in CI. Figure out the most likely cause.",
+    "expect": "none",
+    "soft": false
+  },
+  {
+    "id": "neg_security_review",
+    "category": "negative",
+    "prompt": "Review the path handling in safety.py for path-traversal vulnerabilities and tell me whether resolve_within is safe.",
+    "expect": "none",
+    "soft": false
+  },
+  {
+    "id": "neg_refactor_plan",
+    "category": "negative",
+    "prompt": "Plan how to refactor app/routes/ to share a common request-validation layer.",
+    "expect": "none",
+    "soft": false
+  },
+
+  {
+    "id": "edge_single_small_file",
+    "category": "edge",
+    "prompt": "Summarize this one short file: app/routes/health.py.",
+    "expect": null,
+    "soft": true,
+    "note": "Single tiny file — delegating is arguably wasteful. Informational: tests over-triggering on the word 'summarize'."
+  },
+  {
+    "id": "edge_read_then_judge",
+    "category": "edge",
+    "prompt": "Read all the handlers under app/routes/ and then recommend the best way to restructure them into a single resource module.",
+    "expect": "ask-coworker",
+    "soft": true,
+    "note": "Ideal: delegate the bulk READ to ask-coworker, keep the restructuring judgment. Soft-scored against ask-coworker."
+  },
+  {
+    "id": "edge_security_write_collision",
+    "category": "edge",
+    "prompt": "Write the auth-token validation function for our safety-critical login flow and put it in auth.py.",
+    "expect": "none",
+    "soft": true,
+    "note": "'write a function' trigger collides with the security-critical anti-rule. Should NOT delegate."
+  }
+]
