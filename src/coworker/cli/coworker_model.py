@@ -34,7 +34,7 @@ def _list_models() -> None:
 
 def _download_command(entry) -> str:  # entry: ModelEntry
     local_dir = str(Path.home() / "models")
-    return f"huggingface-cli download {entry.hf_repo} {entry.gguf_filename} --local-dir {local_dir}"
+    return f"hf download {entry.hf_repo} {entry.gguf_filename} --local-dir {local_dir}"
 
 
 def _set_model(label: str) -> int:
@@ -62,7 +62,7 @@ def _set_model(label: str) -> int:
         if answer == "y":
             subprocess.run(
                 [
-                    "huggingface-cli",
+                    "hf",
                     "download",
                     entry.hf_repo,
                     entry.gguf_filename,

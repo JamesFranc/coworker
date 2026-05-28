@@ -83,4 +83,4 @@ def test_set_non_tty_prints_download_command(monkeypatch, tmp_path, capsys):
     # If the GGUF is absent (expected in CI), the download command is printed.
     if not qwopus.local_path.exists():
         out = capsys.readouterr().out
-        assert "huggingface-cli download" in out
+        assert "hf download" in out
