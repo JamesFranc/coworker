@@ -42,5 +42,8 @@ fi
 # (interactive: prompt, default no; non-TTY: print the manual command).
 coworker-model --set "$label" || python -m coworker.cli.coworker_model --set "$label"
 
+if command -v uv >/dev/null 2>&1; then
+    uv tool install --editable .
+fi
+
 echo "Done. Activate with: source .venv/bin/activate"
-echo "Or install as a tool:  uv tool install --editable ."
