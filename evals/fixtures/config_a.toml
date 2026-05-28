@@ -1,0 +1,8 @@
+# Service A configuration
+[server]
+host = "127.0.0.1"
+port = 8001
+
+[client]
+retries = 3
+timeout = 30  # seconds
