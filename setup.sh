@@ -33,8 +33,8 @@ esac
 
 label="${LABELS[$idx]}"
 
-# Ensure huggingface-cli is available so coworker-model can offer a download.
-if ! command -v huggingface-cli >/dev/null 2>&1; then
+# Ensure hf is available so coworker-model can offer a download.
+if ! command -v hf >/dev/null 2>&1; then
     pip install huggingface_hub
 fi
 
