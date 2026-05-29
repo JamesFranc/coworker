@@ -12,6 +12,11 @@ dependencies = [
     "openai>=1.0",
     "pathspec>=0.12",
     "tomli ; python_version < '3.11'",
+    # coworker-model downloads GGUFs via the `hf` CLI. huggingface_hub's CLI
+    # imports `click` directly, but recent typer (>=0.26) no longer pulls it
+    # in transitively, so click must be declared explicitly.
+    "huggingface_hub>=0.23",
+    "click>=8.0",
 ]
 
 [project.optional-dependencies]

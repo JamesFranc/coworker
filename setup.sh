@@ -33,10 +33,6 @@ esac
 
 label="${LABELS[$idx]}"
 
-# Ensure huggingface_hub[cli] (i.e. click) is present — hf may already be on
-# PATH via mlx-lm's transitive dep but without the cli extra.
-pip install "huggingface_hub[cli]"
-
 # Persist the selection. coworker-model --set owns the download prompt
 # (interactive: prompt, default no; non-TTY: print the manual command).
 coworker-model --set "$label" || python -m coworker.cli.coworker_model --set "$label"
