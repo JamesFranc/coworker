@@ -33,10 +33,9 @@ esac
 
 label="${LABELS[$idx]}"
 
-# Ensure hf is available so coworker-model can offer a download.
-if ! command -v hf >/dev/null 2>&1; then
-    pip install "huggingface_hub[cli]"
-fi
+# Ensure huggingface_hub[cli] (i.e. click) is present — hf may already be on
+# PATH via mlx-lm's transitive dep but without the cli extra.
+pip install "huggingface_hub[cli]"
 
 # Persist the selection. coworker-model --set owns the download prompt
 # (interactive: prompt, default no; non-TTY: print the manual command).
