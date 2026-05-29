@@ -35,7 +35,7 @@ label="${LABELS[$idx]}"
 
 # Ensure hf is available so coworker-model can offer a download.
 if ! command -v hf >/dev/null 2>&1; then
-    pip install huggingface_hub
+    pip install "huggingface_hub[cli]"
 fi
 
 # Persist the selection. coworker-model --set owns the download prompt
