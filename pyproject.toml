@@ -17,6 +17,7 @@ dependencies = [
 [project.optional-dependencies]
 mlx = ["mlx-lm>=0.18"]
 dev = ["pytest>=8.0"]
+evals-inspect = ["inspect-ai>=0.3"]
 
 [project.scripts]
 ask-coworker = "coworker.cli.ask_coworker:main"
