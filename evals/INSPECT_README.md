@@ -96,6 +96,36 @@ routing decision:
 inspect view --log-dir evals/results/inspect-logs
 ```
 
+## Running it in CI
+
+`tests/test_routing_eval.py` is a pytest wrapper around this eval. Because every
+trial is a real, paid Claude Code session it is **opt-in** — it skips by default
+(and also skips cleanly if `inspect-ai` or the `claude` CLI are missing), so the
+normal `pytest` unit run stays fast and free.
+
+```bash
+# locally: run the whole suite under the strict wording
+RUN_ROUTING_EVAL=1 ROUTING_EVAL_VARIANT=strict pytest tests/test_routing_eval.py -v
+
+# a cheap smoke run of a single case
+RUN_ROUTING_EVAL=1 ROUTING_EVAL_FILTER=neg_security_review \
+  ROUTING_EVAL_EPOCHS=1 pytest tests/test_routing_eval.py -v
+```
+
+The headline gate is **`test_negatives_never_delegate`** (`negative_safety == 1.0`)
+— over-delegation is the failure mode that matters for any wording. The
+positive-rate gate is opt-in (set `ROUTING_EVAL_POSITIVE_THRESHOLD`) because the
+shipped baseline wording is intentionally permissive.
+
+Config env vars: `RUN_ROUTING_EVAL`, `ROUTING_EVAL_VARIANT`, `ROUTING_EVAL_EPOCHS`,
+`ROUTING_EVAL_MAX_SAMPLES`, `ROUTING_EVAL_MODEL`, `ROUTING_EVAL_FILTER`,
+`ROUTING_EVAL_POSITIVE_THRESHOLD`.
+
+The `.github/workflows/routing-eval.yml` workflow runs this on demand
+(`workflow_dispatch`, with variant/epochs/threshold inputs). It installs the
+`claude` CLI and needs an `ANTHROPIC_API_KEY` repo secret for headless auth.
+It's manual rather than on-push precisely because of the per-run session cost.
+
 ## Notes / known rough edges (it's a prototype)
 
 - Per-category metrics read `0.0` on a **filtered** run that excludes a whole

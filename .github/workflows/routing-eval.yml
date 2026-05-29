@@ -1,0 +1,59 @@
+name: routing-eval
+
+# The routing eval starts real, paid Claude Code sessions, so it is NOT run on
+# every push. Trigger it manually from the Actions tab (or call it from another
+# workflow). Requires an ANTHROPIC_API_KEY repository secret for headless
+# Claude Code auth.
+
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: "CLAUDE.md wording to test"
+        type: choice
+        options: [baseline, strict]
+        default: baseline
+      epochs:
+        description: "Trials per case (routing is stochastic)"
+        type: string
+        default: "2"
+      max_samples:
+        description: "Concurrent Claude sessions"
+        type: string
+        default: "3"
+      positive_threshold:
+        description: "Optional min positive routing rate to gate on (blank = off)"
+        type: string
+        default: ""
+
+jobs:
+  routing-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install the claude CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Install the package + eval deps
+        run: pip install -e '.[dev,evals-inspect]'
+
+      - name: Run the routing eval
+        env:
+          # Headless Claude Code auth.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RUN_ROUTING_EVAL: "1"
+          ROUTING_EVAL_VARIANT: ${{ inputs.variant }}
+          ROUTING_EVAL_EPOCHS: ${{ inputs.epochs }}
+          ROUTING_EVAL_MAX_SAMPLES: ${{ inputs.max_samples }}
+          ROUTING_EVAL_POSITIVE_THRESHOLD: ${{ inputs.positive_threshold }}
+        run: pytest tests/test_routing_eval.py -v
