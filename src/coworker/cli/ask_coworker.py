@@ -82,14 +82,24 @@ def main() -> None:
     system = "You are a helpful code assistant. Answer concisely."
 
     user_messages: list[str] = []
+    # input_bytes = bytes of user content sent to the model (files + question)
+    input_bytes = 0
     for path in accepted:
         try:
             content = path.read_text(encoding="utf-8", errors="replace")
         except OSError as e:
             print(f"Error reading {path}: {e}", file=sys.stderr)
             sys.exit(1)
+        input_bytes += len(content.encode("utf-8", errors="replace"))
         user_messages.append(f"=== {path.name} ===\n{content}")
+    input_bytes += len(args.question.encode("utf-8"))
     user_messages.append(args.question)
+
+    usage_context = {
+        "command": "ask-coworker",
+        "num_files": len(accepted),
+        "input_bytes": input_bytes,
+    }
 
     try:
         answer = _backend.run_worker(
@@ -99,6 +109,7 @@ def main() -> None:
             backend=args.backend,
             model=args.model,
             allow_remote=args.allow_remote,
+            usage_context=usage_context,
         )
     except _safety.SafetyError as e:
         print(f"Safety error: {e}", file=sys.stderr)
