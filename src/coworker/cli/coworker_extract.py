@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+from datetime import datetime, timezone
 from typing import TextIO
 
 
@@ -47,10 +48,16 @@ def _try_extract(obj: dict) -> tuple[str, str] | None:
     return None
 
 
-def _process(input_stream: TextIO, output_stream: TextIO, fmt: str, role_filter: str) -> None:
+def _process(input_stream: TextIO, output_stream: TextIO, fmt: str, role_filter: str) -> int:
+    """Process the input stream and write results to output_stream.
+
+    Returns the total number of input bytes read.
+    """
     turns = []
+    input_bytes = 0
 
     for lineno, raw in enumerate(input_stream, 1):
+        input_bytes += len(raw.encode("utf-8"))
         line = raw.strip()
         if not line:
             continue
@@ -81,6 +88,8 @@ def _process(input_stream: TextIO, output_stream: TextIO, fmt: str, role_filter:
     else:
         for turn in turns:
             output_stream.write(f"[{turn['role']}] {turn['content']}\n---\n")
+
+    return input_bytes
 
 
 def main() -> None:
@@ -115,8 +124,9 @@ def main() -> None:
             input_stream.close()
         sys.exit(1)
 
+    input_bytes = 0
     try:
-        _process(input_stream, output_stream, args.fmt, args.role)
+        input_bytes = _process(input_stream, output_stream, args.fmt, args.role)
     except OSError as e:
         print(f"IO error: {e}", file=sys.stderr)
         sys.exit(1)
@@ -125,6 +135,23 @@ def main() -> None:
             input_stream.close()
         if args.output is not None:
             output_stream.close()
+
+    # Log a local-only usage record (no model was called).
+    from coworker import usage_log
+
+    usage_log.append_record({
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "command": "coworker-extract",
+        "backend": None,
+        "model": None,
+        "num_files": 1 if args.input != "-" else 0,
+        "input_bytes": input_bytes,
+        "prompt_tokens": None,
+        "completion_tokens": None,
+        "total_tokens": None,
+        "max_tokens": None,
+        "token_source": "none",
+    })
 
 
 if __name__ == "__main__":

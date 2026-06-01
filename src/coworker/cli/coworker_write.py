@@ -200,6 +200,15 @@ def main(argv: list[str] | None = None) -> None:
     user_messages.append(f"Generate the following:\n{spec_text}")
 
     # -- Call backend ------------------------------------------------------------
+    # input_bytes = bytes of user content sent to the model (spec + style-ref)
+    usage_context = {
+        "command": "coworker-write",
+        "num_files": 1 if style_content is not None else 0,
+        "input_bytes": len(spec_text.encode("utf-8")) + (
+            len(style_content.encode("utf-8")) if style_content is not None else 0
+        ),
+    }
+
     try:
         content = _backend.run_worker(
             system=_SYSTEM_PROMPT,
@@ -208,6 +217,7 @@ def main(argv: list[str] | None = None) -> None:
             backend=args.backend,
             model=args.model,
             allow_remote=args.allow_remote,
+            usage_context=usage_context,
         )
     except _backend.BackendError as exc:
         print(f"error: {exc}", file=sys.stderr)

@@ -7,6 +7,7 @@ import os
 import platform
 import socket
 import sys
+from datetime import datetime, timezone
 
 
 class BackendError(Exception):
@@ -53,7 +54,11 @@ def _run_openai_compat(
     system: str,
     user_messages: list[str],
     max_tokens: int,
-) -> str:
+) -> tuple[str, dict]:
+    """Run a chat completion against an OpenAI-compatible API.
+
+    Returns (content, usage_dict) where usage_dict contains token counts.
+    """
     import openai
 
     client = openai.OpenAI(base_url=base_url, api_key=api_key)
@@ -63,7 +68,25 @@ def _run_openai_compat(
     response = client.chat.completions.create(
         model=model, messages=messages, max_tokens=max_tokens
     )
-    return response.choices[0].message.content
+    content = response.choices[0].message.content
+
+    raw_usage = getattr(response, "usage", None)
+    if raw_usage is not None:
+        usage: dict = {
+            "prompt_tokens": getattr(raw_usage, "prompt_tokens", None),
+            "completion_tokens": getattr(raw_usage, "completion_tokens", None),
+            "total_tokens": getattr(raw_usage, "total_tokens", None),
+            "token_source": "api",
+        }
+    else:
+        usage = {
+            "prompt_tokens": None,
+            "completion_tokens": None,
+            "total_tokens": None,
+            "token_source": "unavailable",
+        }
+
+    return content, usage
 
 
 def _resolve_backend_and_model(
@@ -109,7 +132,10 @@ def run_worker(
     base_url: str | None = None,
     model: str | None = None,
     allow_remote: bool = False,
+    usage_context: dict | None = None,
 ) -> str:
+    from coworker import usage_log
+
     backend, model = _resolve_backend_and_model(backend, model)
 
     if backend == "ollama":
@@ -117,14 +143,14 @@ def run_worker(
             base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:11434/v1")
 
         resolve_endpoint(base_url, allow_remote)
-        return _run_openai_compat(base_url, "ollama", model, system, user_messages, max_tokens)
+        content, usage = _run_openai_compat(base_url, "ollama", model, system, user_messages, max_tokens)
 
     elif backend == "llamacpp":
         if base_url is None:
             base_url = os.environ.get("COWORKER_BASE_URL", "http://localhost:8080/v1")
 
         resolve_endpoint(base_url, allow_remote)
-        return _run_openai_compat(base_url, "none", model, system, user_messages, max_tokens)
+        content, usage = _run_openai_compat(base_url, "none", model, system, user_messages, max_tokens)
 
     elif backend == "mlx":
         if platform.system() != "Darwin" or platform.machine() != "arm64":
@@ -135,7 +161,47 @@ def run_worker(
         mlx_model, tokenizer = load(model)
         prompt = "\n".join([system] + user_messages)
         result = generate(mlx_model, tokenizer, prompt=prompt, max_tokens=max_tokens, verbose=False)
-        return result
+        content = result
+
+        # Estimate token counts from the tokenizer.  mlx_lm.generate may not
+        # return a stats object in all versions, so we derive counts ourselves.
+        # Wrapped in try/except so any failure (e.g. mock tokenizer) degrades
+        # gracefully without breaking the caller.
+        try:
+            prompt_tokens = len(tokenizer.encode(prompt))
+            completion_tokens = len(tokenizer.encode(result))
+            total_tokens = prompt_tokens + completion_tokens
+            token_source = "mlx_estimated"
+        except Exception:  # noqa: BLE001
+            prompt_tokens = None
+            completion_tokens = None
+            total_tokens = None
+            token_source = "mlx_unavailable"
+
+        usage = {
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "total_tokens": total_tokens,
+            "token_source": token_source,
+        }
 
     else:
         raise BackendError(f"Unknown backend: {backend!r}", exit_code=1)
+
+    if usage_context is not None:
+        record = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "command": usage_context.get("command"),
+            "backend": backend,
+            "model": model,
+            "num_files": usage_context.get("num_files"),
+            "input_bytes": usage_context.get("input_bytes"),
+            "prompt_tokens": usage["prompt_tokens"],
+            "completion_tokens": usage["completion_tokens"],
+            "total_tokens": usage["total_tokens"],
+            "max_tokens": max_tokens,
+            "token_source": usage["token_source"],
+        }
+        usage_log.append_record(record)
+
+    return content
