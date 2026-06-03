@@ -9,3 +9,7 @@ build/
 .pytest_cache/
 *.pyo
 .DS_Store
+
+# coworker-tools: local mining output (may contain private session text)
+mined-corrections.txt
+mined-rules.md

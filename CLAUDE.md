@@ -1,0 +1,69 @@
+# coworker-tools — Claude Code integration notes
+
+## What this tool is for
+
+coworker-tools offloads bulk read-heavy or boilerplate-generation tasks to a
+local model, freeing Claude Code's context window for architecture, debugging,
+and safety-critical reasoning.
+
+## When to use it
+
+- Reading many files to answer a factual question
+- Generating boilerplate from a clear spec
+- Parsing Claude Code transcripts
+
+## When NOT to use it
+
+- Architecture decisions and trade-offs
+- Debugging subtle behaviour
+- Security-critical code
+- Anything requiring judgment about context beyond the files provided
+
+## Worker Delegation Rules
+
+When asked to analyze, summarize, or search across multiple files:
+Consider delegating to `ask-coworker` with the relevant `--paths`.
+
+When asked to generate boilerplate, tests, or documentation from a spec:
+Consider delegating to `coworker-write` with a `--spec` and optional `--style-ref`.
+
+When asked to review Claude Code session history or transcript:
+Consider delegating to `coworker-extract`.
+
+Do NOT delegate:
+- Architecture decisions and trade-offs
+- Debugging subtle or complex behaviour
+- Refactoring plans
+- Security-critical code
+- Tasks requiring judgment beyond the files provided
+
+## Backends
+
+Set COWORKER_BACKEND=llamacpp (default), ollama, or mlx. See README for full env var list.
+
+## Safety
+
+The tool enforces localhost-only endpoints by default. Do not pass --allow-remote
+unless you have explicitly set up a trusted local network endpoint and understand
+the risks. See SECURITY.md for the full threat model.
+
+## Mining your own corrections into rules
+
+To grow the rules below from your real usage, run the local-only workflow:
+
+```bash
+examples/mine-corrections.sh 50      # scan your last 50 Claude Code sessions
+```
+
+It reads `~/.claude/projects/*.jsonl` via `coworker-extract`, keeps the turns
+that look like corrections, and uses the local `ask-coworker` model to cluster
+the recurring ones into candidate rules (written to `mined-rules.md`). Review
+that file and paste the keepers into the section below. Nothing leaves your
+machine.
+
+## Mined rules
+
+<!-- Paste reviewed rules from `mined-rules.md` here. Each rule should be a
+     concise, imperative instruction tied to a correction you keep repeating. -->
+
+_None yet — run `examples/mine-corrections.sh` to populate this section._
